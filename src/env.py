@@ -7,8 +7,8 @@ BOT_TOKEN = cast(
     str,
     os.getenv('BOT_TOKEN')
     or {
-        **dotenv_values('../.env.development'),
-        **dotenv_values('../.env.local'),
+        **dotenv_values('.env.development'),
+        **dotenv_values('.env.local'),
     }.get('BOT_TOKEN'),
 )
 

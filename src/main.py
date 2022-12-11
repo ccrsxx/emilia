@@ -1,24 +1,29 @@
-from discord import Client, Intents
+from discord import Intents, Message
+from discord.ext import commands
+from discord.ext.commands import Context
 from env import BOT_TOKEN
+
 
 intents = Intents.default()
 intents.message_content = True
 
-client = Client(intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 
-@client.event
+@bot.command()
+@commands.is_owner()
+async def test_admin(ctx: Context, arg: str):
+    await ctx.send(arg)
+
+
+@bot.event
 async def on_ready():
-    print(f'We have logged in as {client.user}')
+    print(f'We have logged in as {bot.user}')
 
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+@bot.listen('on_message')
+async def on_message(message: Message):
+    pass
 
 
-client.run(BOT_TOKEN)
+bot.run(BOT_TOKEN)
