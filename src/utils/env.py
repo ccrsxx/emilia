@@ -1,4 +1,5 @@
 import os
+
 from dotenv import dotenv_values
 from typing import Final, cast
 
