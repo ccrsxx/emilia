@@ -9,20 +9,20 @@ class Tools(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def echo(self, ctx, *, message) -> None:
+    async def echo(self, ctx: commands.Context, *, arg) -> None:
         await ctx.message.delete()
-        await ctx.send(message)
+        await ctx.send(arg)
 
     @commands.command()
-    async def ping(self, ctx) -> None:
+    async def ping(self, ctx: commands.Context) -> None:
         await ctx.send(f'🏓 {round(self.bot.latency * 1000)} ms.')
 
     @commands.command()
-    async def get_info(self, ctx) -> None:
+    async def get_info(self, ctx: commands.Context) -> None:
         embed = discord.Embed(
             title='Info',
             description='An info message using an embed!',
-            colour=discord.Colour.blurple(),  # 0x7289da
+            colour=discord.Colour.blurple(),
             timestamp=datetime.datetime.utcnow(),
         )
 
