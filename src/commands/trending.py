@@ -1,19 +1,8 @@
+import discord
 from aiohttp import ClientSession
 from discord.ext import commands, tasks
-from typing import Final, TypedDict
-
-
-class TrendingType(TypedDict):
-    url: str
-    name: str
-    query: str
-    tweet_volume: int
-    promoted_content: str
-
-
-class TrendingResponse(TypedDict):
-    trends: list[TrendingType]
-    location: str
+from typing import Final
+from models.trending import TrendingType, TrendingResponse
 
 
 class Trending(commands.Cog):
@@ -37,34 +26,39 @@ class Trending(commands.Cog):
             data: TrendingResponse = await resp.json()
 
             if resp.ok:
-                top_trending = self.parse_trending(data)
-                return top_trending
+                return data['trends']
 
             return None
 
     @commands.command()
     async def trending(self, ctx: commands.Context) -> None:
-        trending_list = '📈 **Top 10 Trending on Twitter**:\n'
+        if not self.top_trends:
+            await ctx.send('❌ **No trending available**')
+            return
 
-        trending_list += '\n'.join(
-            f'{i}.\t **{trend["name"]}** - {trend["tweet_volume"]}'
-            for i, trend in enumerate(self.top_trends, 1)
+        embed = discord.Embed(
+            title='📈 **Top 10 Trending on Twitter**',
+            color=discord.Color.blue(),
+            timestamp=ctx.message.created_at,
         )
 
-        await ctx.send(trending_list)
+        for i, trend in enumerate(self.top_trends, 1):
+            name, tweet_volume = trend['name'], trend['tweet_volume']
+            embed.add_field(
+                name=f'{i}. {name}', value=f'{tweet_volume:,} tweets', inline=False
+            )
 
-    def parse_trending(self, data: TrendingResponse) -> list[TrendingType]:
-        trends = data['trends'][:10]
+        await ctx.send(embed=embed)
 
-        for trend in trends:
-            for key, value in trend.copy().items():
-                if key == 'promoted_content':
-                    trend.pop(key)
-                elif key == 'tweet_volume':
-                    trend[key] = f'{value:,} tweets'
+    @commands.command()
+    async def force_refresh_trending(self, ctx: commands.Context) -> None:
+        new_top_trends: Final[list[TrendingType] | None] = await self.get_trending()
+        if new_top_trends:
+            self.top_trends = new_top_trends
+            await ctx.send('🔄 **Trending refreshed**')
+        else:
+            await ctx.send('❌ **Failed to refresh trending**')
 
-        return trends
 
-
-async def setup(bot) -> None:
+async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(Trending(bot))

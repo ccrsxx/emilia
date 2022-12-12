@@ -3,9 +3,9 @@ import discord
 from discord import Intents
 from discord.ext import commands, tasks
 from cogwatch import Watcher
-from itertools import cycle
-from utils.env import BOT_TOKEN
 from typing import Final, Literal
+from constants.token import BOT_TOKEN
+from constants.status_list import RE_ZERO_CHARS
 
 
 def get_prefix(
@@ -53,17 +53,9 @@ async def on_ready() -> None:
     await watcher.start()
 
 
-status_list = cycle(
-    [
-        'with Ami',
-        'with Rem',
-    ]
-)
-
-
 @tasks.loop(minutes=5)
 async def change_status() -> None:
-    await bot.change_presence(activity=discord.Game(next(status_list)))
+    await bot.change_presence(activity=discord.Game(f'with {next(RE_ZERO_CHARS)}'))
 
 
 bot.run(BOT_TOKEN)
