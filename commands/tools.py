@@ -7,6 +7,25 @@ from discord.ext import commands
 class Tools(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
+        self.start_time = datetime.datetime.utcnow()
+
+    @commands.command()
+    async def uptime(self, ctx: commands.Context) -> None:
+        now = datetime.datetime.utcnow()
+        delta = now - self.start_time
+        seconds = int(delta.total_seconds())
+        hours, remainder = divmod(seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+
+        if hours >= 24:
+            days, hours = divmod(hours, 24)
+            message = f'Uptime: {days} day(s), {hours} hour(s), {minutes} minute(s), {seconds} second(s)'
+        else:
+            message = (
+                f'Uptime: {hours} hour(s), {minutes} minute(s), {seconds} second(s)'
+            )
+
+        await ctx.send(f'⏳ {message}')
 
     @commands.command()
     async def echo(self, ctx: commands.Context, *, arg) -> None:
