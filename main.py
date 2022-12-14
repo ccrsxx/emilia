@@ -23,9 +23,9 @@ def get_prefix(
     return cast(list[Prefixes], commands.when_mentioned_or(*prefixes)(bot, message))
 
 
-intents: Final[Intents] = Intents.default().all()
+intents: Final = Intents.default().all()
 
-bot: Final[commands.Bot] = commands.Bot(
+bot: Final = commands.Bot(
     command_prefix=get_prefix,
     description='Personal bot by ccrsxx',
     intents=intents,
@@ -38,7 +38,7 @@ async def on_ready() -> None:
 
     change_status.start()
 
-    watcher: Final[Watcher] = Watcher(bot, path='commands')
+    watcher: Final = Watcher(bot, path='commands')
 
     await watcher.start()
 
@@ -49,7 +49,7 @@ async def change_status() -> None:
 
 
 async def load_commands() -> None:
-    commands: Final[list[str]] = [
+    commands: Final = [
         f'commands.{command[:-3]}'
         for command in os.listdir('commands')
         if command.endswith('.py')

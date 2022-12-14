@@ -8,12 +8,12 @@ from models.trending import TrendingType, TrendingResponse
 class Trending(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.top_trends: list[TrendingType] = []
+        self.top_trends: list[TrendingType] | None = None
         self.refresh_trending.start()
 
     @tasks.loop(hours=1)
     async def refresh_trending(self) -> None:
-        new_top_trends: Final[list[TrendingType] | None] = await self.get_trending()
+        new_top_trends: Final = await self.get_trending()
         if new_top_trends:
             self.top_trends = new_top_trends
 
@@ -36,7 +36,7 @@ class Trending(commands.Cog):
             await ctx.send('❌ **No trending available**')
             return
 
-        embed = discord.Embed(
+        embed: Final = discord.Embed(
             title='📈 **Top 10 Trending on Twitter**',
             color=discord.Color.blue(),
             timestamp=ctx.message.created_at,
@@ -52,7 +52,7 @@ class Trending(commands.Cog):
 
     @commands.command()
     async def force_refresh_trending(self, ctx: commands.Context) -> None:
-        new_top_trends: Final[list[TrendingType] | None] = await self.get_trending()
+        new_top_trends: Final = await self.get_trending()
         if new_top_trends:
             self.top_trends = new_top_trends
             await ctx.send('🔄 **Trending refreshed**')

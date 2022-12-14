@@ -2,6 +2,7 @@ import discord
 import datetime
 
 from discord.ext import commands
+from typing import Final
 
 
 class Tools(commands.Cog):
@@ -11,21 +12,24 @@ class Tools(commands.Cog):
 
     @commands.command()
     async def uptime(self, ctx: commands.Context) -> None:
-        now = datetime.datetime.utcnow()
-        delta = now - self.start_time
+        await ctx.message.add_reaction('🤡')
+
+        now: Final = datetime.datetime.utcnow()
+        delta: Final = now - self.start_time
         seconds = int(delta.total_seconds())
-        hours, remainder = divmod(seconds, 3600)
-        minutes, seconds = divmod(remainder, 60)
 
-        if hours >= 24:
-            days, hours = divmod(hours, 24)
-            message = f'Uptime: {days} day(s), {hours} hour(s), {minutes} minute(s), {seconds} second(s)'
-        else:
-            message = (
-                f'Uptime: {hours} hour(s), {minutes} minute(s), {seconds} second(s)'
-            )
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+        days, hours = divmod(hours, 24)
 
-        await ctx.send(f'⏳ {message}')
+        message = '⏳ Uptime: '
+
+        if days:
+            message += f'{days} day(s), '
+
+        message += f'{hours} hour(s), {minutes} minute(s), {seconds} second(s)'
+
+        await ctx.send(message)
 
     @commands.command()
     async def echo(self, ctx: commands.Context, *, arg) -> None:

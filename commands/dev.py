@@ -14,7 +14,7 @@ class Dev(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def exec(self, ctx: commands.Context, *, arg: str) -> None:
-        f = StringIO()
+        f: Final = StringIO()
 
         if arg.startswith('```') and arg.endswith('```'):
             arg = re.sub(r'```(\w+)?', '', arg)
@@ -26,7 +26,7 @@ class Dev(commands.Cog):
                 await ctx.send(f'❌  **{type(e).__name__} - {e}**: `{arg}`')
                 return
 
-        command_output_value: Final[str] = f.getvalue()
+        command_output_value: Final = f.getvalue()
 
         await ctx.send(
             command_output_value

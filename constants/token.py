@@ -4,7 +4,7 @@ from dotenv import dotenv_values
 from typing import Final, cast
 
 
-BOT_TOKEN: Final[str] = cast(
+BOT_TOKEN: Final = cast(
     str,
     os.getenv('BOT_TOKEN')
     or {
