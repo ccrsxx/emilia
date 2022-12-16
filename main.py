@@ -1,13 +1,14 @@
-import os
 import asyncio
-import discord
-
+import os
 from typing import Final, Literal, cast
+
+import discord
+from cogwatch import Watcher
 from discord import Intents
 from discord.ext import commands, tasks
-from cogwatch import Watcher
-from constants.token import BOT_TOKEN
+
 from constants.status_list import RE_ZERO_CHARS
+from constants.token import BOT_TOKEN
 
 Prefixes = tuple[Literal['!'], Literal['$'], Literal['>']]
 

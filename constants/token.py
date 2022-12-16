@@ -1,8 +1,7 @@
 import os
-
-from dotenv import dotenv_values
 from typing import Final, cast
 
+from dotenv import dotenv_values
 
 BOT_TOKEN: Final = cast(
     str,

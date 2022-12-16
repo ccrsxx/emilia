@@ -1,10 +1,10 @@
 import re
-
-from io import StringIO
-from discord import app_commands, Interaction
-from discord.ext import commands
 from contextlib import redirect_stdout
+from io import StringIO
 from typing import Final
+
+from discord import Interaction, app_commands
+from discord.ext import commands
 
 
 class Dev(commands.Cog):

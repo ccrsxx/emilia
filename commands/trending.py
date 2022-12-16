@@ -1,8 +1,10 @@
+from typing import Final
+
 import discord
 from aiohttp import ClientSession
 from discord.ext import commands, tasks
-from typing import Final
-from models.trending import TrendingType, TrendingResponse
+
+from models.trending import TrendingResponse, TrendingType
 
 
 class Trending(commands.Cog):
