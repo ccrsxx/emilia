@@ -2,25 +2,25 @@ import os
 import asyncio
 import discord
 
+from typing import Final, Literal, cast
 from discord import Intents
 from discord.ext import commands, tasks
 from cogwatch import Watcher
-from typing import Final, Literal, cast
 from constants.token import BOT_TOKEN
 from constants.status_list import RE_ZERO_CHARS
 
-Prefixes = Literal['!', '$', '>']
+Prefixes = tuple[Literal['!'], Literal['$'], Literal['>']]
 
 
 def get_prefix(
     bot: commands.Bot, message: discord.Message
-) -> (list[Prefixes] | Literal['?']):
-    prefixes: Final[list[Prefixes]] = ['!', '$', '>']
+) -> (Prefixes | Literal['?']):
+    prefixes: Final[Prefixes] = ('!', '$', '>')
 
     if not message.guild:
         return '?'
 
-    return cast(list[Prefixes], commands.when_mentioned_or(*prefixes)(bot, message))
+    return cast(Prefixes, commands.when_mentioned_or(*prefixes)(bot, message))
 
 
 intents: Final = Intents.default().all()
