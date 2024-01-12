@@ -33,30 +33,6 @@ class Tools(commands.Cog):
         await ctx.send(message)
 
     @commands.command()
-    async def system_uptime(self, ctx: commands.Context) -> None:
-        # getting the library in which GetTickCount64() resides
-        lib = ctypes.windll.kernel32
-        
-        # calling the function and storing the return value
-        t = lib.GetTickCount64()
-        
-        # since the time is in milliseconds i.e. 1000 * seconds
-        # therefore truncating the value
-        t = int(str(t)[:-3])
-        
-        # extracting hours, minutes, seconds & days from t
-        # variable (which stores total time in seconds)
-        mins, sec = divmod(t, 60)
-        hour, mins = divmod(mins, 60)
-        days, hour = divmod(hour, 24)
-        
-        # formatting the time in readable form
-        # (format = x days, HH:MM:SS)
-        message = f"{days} days, {hour:02}:{mins:02}:{sec:02}"
-
-        await ctx.send(message)
-
-    @commands.command()
     async def echo(self, ctx: commands.Context, *, arg) -> None:
         await ctx.message.delete()
         await ctx.send(arg)
