@@ -50,6 +50,8 @@ async def change_status() -> None:
 
 
 async def load_commands() -> None:
+    os.chdir('src')
+
     commands: Final = [
         f'commands.{command[:-3]}'
         for command in os.listdir('commands')
