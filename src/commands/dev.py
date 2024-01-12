@@ -23,7 +23,7 @@ class Dev(commands.Cog):
             try:
                 exec(arg)
             except Exception as e:
-                await ctx.send(f'❌  **{type(e).__name__} - {e}**: `{arg}`')
+                await ctx.send(f'❌  **{type(e).__name__} - {e}**: ```py{arg}```')
                 return
 
         command_output_value: Final = f.getvalue()
