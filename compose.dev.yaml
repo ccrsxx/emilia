@@ -1,5 +1,7 @@
 services:
   app:
+    build:
+      context: .
     image: emilia
     volumes:
       - ./:/app

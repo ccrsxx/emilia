@@ -1,8 +1,6 @@
 services:
   app:
-    image: emilia
-    build:
-      context: .
+    image: ccrsxx/emilia:latest
     env_file: ${ENV_FILE:-.env.development}
     environment:
       - BOT_TOKEN
